@@ -36,6 +36,13 @@
 "
 " [+] 2009-04-01
 "     增加全屏插件，绑定 <f11>
+"
+" [!] 2010-12-07(Harry Liu) 
+"     修改schema到evening
+"     修改wrap 到nowrap 
+
+
+
 
 if exists("mingcheng")
     finish
@@ -65,7 +72,7 @@ set history=400
 set linebreak
 set nocompatible
 set textwidth=80
-set wrap
+set nowrap
 
 " 标签页
 set tabpagemax=9
