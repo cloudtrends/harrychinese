@@ -1,0 +1,13 @@
+0. VIM的安装
+  请选择 vim-full 安装, 
+
+
+1. 加上 python 代码自动完成功能
+下载pydiction(http://www.vim.org/scripts/script.php?script_id=850)，解压后有4个文件，拷贝python_pydiction.vim和complete-dict到 ftplugin 目录，修改_vimrc
+
+"Pydiction
+    " 增加 python 的语法支持
+    let g:pydiction_location = '$VIMRUNTIME\ftplugin\complete-dict'
+
+
+Pydiction uses the Tab key to do completion, use Up|Down arrow key to choose one candidation
