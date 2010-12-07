@@ -1,0 +1,311 @@
+" vim: set et sw=4 ts=4 sts=4 fdm=marker ff=unix fenc=utf8:
+"
+" 明城的 Vim 配置文件
+"
+"   author: feelinglucky<i.feelinglucky@gmail.com>
+"     link: http://www.gracecode.com/
+"     date: 2008-10-07
+"  version: $Id: _vimrc 223 2008-11-06 02:18:24Z i.feelinglucky $
+"
+" change
+"     [+]new feature  [*]improvement  [!]change  [x]bug fix
+"
+" [!] 2009-07-10
+"     重新整理 Vim 配置文件结构
+"
+" [*] 2009-07-05
+"     增加 ActionScript 语法支持
+"     
+" [*] 2009-05-31
+"     增加 javascript_enable_domhtmlcss 变量，用于 JavaScript 语法高亮
+"
+" [!] 2009-05-07
+"     快捷键： Q 退出；增加、更改 Tab 相关的快捷键
+"
+" [!] 2009-05-04
+"     改进 Windows 字体配置，使其能使用任何中文名称
+"
+" [!] 2009-04-28
+"     更改 Windows 快捷键，直接使用 mswin.vim
+"
+" [!] 2009-04-21
+"     加入相应的 au 命令，避免使用 VimWiki 折叠
+"
+" [!] 2009-04-01
+"     分离配置文件，将私人配置（包括 Twitter 相关的插件）独立出本文件
+"
+" [+] 2009-04-01
+"     增加全屏插件，绑定 <f11>
+
+if exists("mingcheng")
+    finish
+endif
+let mingcheng = 1
+
+if v:version < 700
+    echoerr 'This _vimrc requires Vim 7 or later.'
+    quit
+endif
+
+" =========
+" 功能函数
+" =========
+" 获取当前目录
+func GetPWD()
+    return substitute(getcwd(), "", "", "g")
+endf
+
+" =========
+" 环境配置
+" =========
+" 保留历史记录
+set history=400
+
+" 行控制
+set linebreak
+set nocompatible
+set textwidth=80
+set wrap
+
+" 标签页
+set tabpagemax=9
+set showtabline=2
+
+" 控制台响铃
+set noerrorbells
+set novisualbell
+set t_vb= "close visual bell
+
+" 行号和标尺
+set number
+set ruler
+set rulerformat=%15(%c%V\ %p%%%)
+
+" 命令行于状态行
+set ch=1
+set stl=\ [File]\ %F%m%r%h%y[%{&fileformat},%{&fileencoding}]\ %w\ \ [PWD]\ %r%{GetPWD()}%h\ %=\ [Line]\ %l,%c\ %=\ %P 
+set ls=2 " 始终显示状态行
+
+" 搜索
+set hlsearch
+set noincsearch
+
+" 制表符
+set tabstop=4
+set expandtab
+set smarttab
+set shiftwidth=4
+set softtabstop=4
+
+" 状态栏显示目前所执行的指令
+set showcmd 
+
+" 缩进
+set autoindent
+set smartindent
+
+" 自动重新读入
+set autoread
+
+" 插入模式下使用 <BS>、<Del> <C-W> <C-U>
+set backspace=indent,eol,start
+
+" 设定在任何模式下鼠标都可用
+set mouse=a
+
+" 备份和缓存
+"set nobackup
+"set noswapfile
+
+" 自动完成
+set complete=.,w,b,k,t,i
+set completeopt=longest,menu
+
+" 代码折叠
+set foldmethod=syntax
+
+" 自动切换到文件当前目录
+set autochdir
+
+
+" =====================
+" 多语言环境
+"    默认为 UTF-8 编码
+" =====================
+if has("multi_byte")
+    set encoding=utf-8
+    " English messages only
+    language messages en_US.utf-8
+    "language messages zh_CN.utf-8
+    let &termencoding=&encoding
+
+    set fencs=utf-8,gbk,chinese,latin1
+    set formatoptions+=mM
+    set nobomb " 不使用 Unicode 签名
+
+    if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)'
+        set ambiwidth=double
+    endif
+else
+    echoerr "Sorry, this version of (g)vim was not compiled with +multi_byte"
+endif
+
+
+" =========
+" AutoCmd
+" =========
+if has("autocmd")
+    filetype plugin indent on
+
+    " 括号自动补全
+    func AutoClose()
+        :inoremap ( ()<ESC>i
+        :inoremap " ""<ESC>i
+        :inoremap ' ''<ESC>i
+        :inoremap { {}<ESC>i
+        :inoremap [ []<ESC>i
+        :inoremap ) <c-r>=ClosePair(')')<CR>
+        :inoremap } <c-r>=ClosePair('}')<CR>
+        :inoremap ] <c-r>=ClosePair(']')<CR>
+    endf
+
+    func ClosePair(char)
+        if getline('.')[col('.') - 1] == a:char
+            return "\<Right>"
+        else
+            return a:char
+        endif
+    endf
+
+    augroup vimrcEx
+        au!
+        autocmd FileType text setlocal textwidth=80
+        autocmd BufReadPost *
+                    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+                    \   exe "normal g`\"" |
+                    \ endif
+    augroup END
+
+    "auto close for PHP and Javascript script
+    au FileType php,c,python,javascript exe AutoClose()
+
+    " 绑定 PHP 检查语法的快捷键
+    au FileType php map <C-s><C-p> :!php -l %<cr>
+
+    " 绑定 jsLint 检查快捷键
+    au FileType javascript map <C-s><C-j> :call JsonLint()<cr>
+
+    " JavaScript 语法高亮
+    au FileType html,javascript let g:javascript_enable_domhtmlcss = 1
+
+    " 给 Javascript 文件添加 Dict
+    au FileType javascript setlocal dict+=$VIM/vimfiles/dict/javascript.dict
+
+    " 给 CSS 文件添加 Dict
+    au FileType css setlocal dict+=$VIM/vimfiles/dict/css.dict
+
+    " 增加 ActionScript 语法支持
+    au BufNewFile,BufRead *.as setf actionscript 
+
+    " 自动最大化窗口
+    if has('gui_running')
+        if has("win32")
+            au GUIEnter * simalt ~x
+        elseif has("unix")
+            au GUIEnter * winpos 0 0
+            set lines=999 columns=9999
+        endif
+    endif
+endif
+
+
+" =========
+" 图形界面
+" =========
+if has('gui_running')
+    if has("win32")
+        " Windows 兼容配置
+        source $VIMRUNTIME/mswin.vim
+
+        " 字体配置
+        exec 'set guifont='.iconv('Courier_New', &enc, 'gbk').':h10'
+        exec 'set guifontwide='.iconv('微软雅黑', &enc, 'gbk').':h10'
+
+
+    elseif has("unix")
+        set guifont=Courier\ 10\ Pitch\ 11
+        set guifontwide=YaHei\ Consolas\ Hybrid\ 11
+    elseif has("mac") || has("macunix")
+        set guifont=
+        set guifontwide=
+    endif
+
+    " 只显示菜单和右侧滚动条
+    set guioptions=cmr
+
+    " 高亮光标所在的行
+    set cursorline
+
+    " 编辑器配色
+    colorscheme evening
+endif
+
+
+" =========
+" 快捷键
+" =========
+map tn :tabnext<cr>
+map tp :tabprevious<cr>
+"map td :tabnew .<cr>
+map td :NERDTree <cr>
+"map te :tabedit
+map tc :tabclose<cr>
+map bf :BufExplorer<cr>
+
+" 标签相关的快捷键
+map <C-t> :tabnew<cr>
+map <C-p> :tabprevious<cr>
+map <C-n> :tabnext<cr>
+map <C-k> :tabclose<cr>
+map <C-Tab> :tabnext<cr> 
+
+" 全屏插件，按 F11
+if has("win32")
+    map <f11> :call libcallnr('fullscreen.dll', 'ToggleFullScreen', 0)<cr>
+endif
+
+for i in range(1, &tabpagemax)
+    exec 'nmap <A-'.i.'> '.i.'gt'
+endfor
+
+" 插件快捷键
+map <C-d> :NERDTree<cr>
+map <C-e> :BufExplorer<cr>
+
+" 新建 XHTML 、PHP、Javascript 文件的快捷键
+map <C-c><C-h> :NewQuickTemplateTab xhtml<cr>
+map <C-c><C-p> :NewQuickTemplateTab php<cr>
+map <C-c><C-j> :NewQuickTemplateTab javascript<cr>
+map <C-c><C-c> :NewQuickTemplateTab css<cr>
+
+" 按下 Q 不进入 Ex 模式，而是退出
+map Q :x<cr>
+
+" =========
+" 插件
+" =========
+" jsLint for Vim
+let g:jslint_command_options  = '-conf ' . shellescape($VIM . '\vimfiles\plugin\jsl.conf')
+let g:jslint_command_options .= ' -nofilelisting -nocontext -nosummary -nologo -process'
+let g:jslint_highlight_color  = '#996600'
+
+" VIM HTML 插件
+let g:no_html_toolbar = 'yes'
+
+" VimWiki
+let g:vimwiki_list = [{'path': $VIM . '\wiki\', 'path_html': $VIM . '\wiki\html\', 'syntax': 'default'}]
+au FileType vimwiki set foldmethod=manual ff=unix fenc=utf8
+map <C-i><C-i> :VimwikiTabGoHome<cr>
+
+" 保证语法高亮
+syntax on
