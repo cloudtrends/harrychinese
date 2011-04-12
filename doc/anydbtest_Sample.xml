@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dbTestFixture
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="file:/C:/TestFileSchema2.xsd">
+  <globalSetting>
+  </globalSetting>
+
+  <procDeclarations>
+    <procDeclaration alias="usp_GetStateBriefsInCountry"  name="usp_GetStateBriefsInCountry"  dbConnection="db1">
+      <remark>
+        <![CDATA[
+create PROCEDURE [Person].[usp_GetStateBriefsInCountry]
+@CountryCode nchar(3)
+AS
+BEGIN
+	select StateProvinceID, StateProvinceCode,
+	CountryRegionCode, Name
+	from Person.StateProvince
+	where CountryRegionCode=@CountryCode;
+END;
+]]></remark>
+      <arguments>
+        <argument name="@CountryCode" direction="Input" type="MSSQL_NCHAR"/>
+        <argument name="@Return_Table" direction="AnonymousOutput"
+                type="MSSQL_RECORDSET"/>
+      </arguments>
+    </procDeclaration>
+  </procDeclarations>
+
+  <sqlDeclarations>
+    <sqlDeclaration alias="sql_BriefState" dbConnection="db1" >
+      <sql ><![CDATA[select StateProvinceCode StateProvince, CountryRegionCode, Name as StateProvinceName from Person.StateProvince;]]></sql>
+      <arguments>
+        <argument direction="Return" name="@Return_Table1" type="MSSQL_RECORDSET"/>
+      </arguments> 
+    </sqlDeclaration>
+  </sqlDeclarations>
+
+  <unitTestCases>
+    <unitTestCase testCaseName ="ut_GetStateBriefsInCountry" assertion="IsSubsetOf" >
+      <targetResultset statementAlias="usp_GetStateBriefsInCountry" outputArgument="@Return_Table">
+        <inputArguments>
+          <argument name="@CountryCode" value="US"/>
+        </inputArguments>
+        <outputSetting>
+          <field name="StateProvinceCode" outputName="StateProvinceCode"/>
+          <field  name="Name" outputName="StateProvinceName"/>
+        </outputSetting>
+      </targetResultset>
+      <referenceResultset  statementAlias="sql_BriefState" outputArgument="@Return_Table1">
+        <outputSetting>
+          <field name="StateProvince" outputName="StateProvinceCode"/>
+          <field  name="StateProvinceName" outputName="StateProvinceName"/>
+        </outputSetting>
+      </referenceResultset>
+    </unitTestCase>
+   </unitTestCases>
+</dbTestFixture>
