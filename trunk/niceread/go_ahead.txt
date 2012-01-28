@@ -1,0 +1,61 @@
+=======================
+  Django 部署
+=======================
+使用heroku的在线服务搭建免费的rails服务器
+http://www.cnblogs.com/klobohyz/archive/2011/12/27/2303715.html   
+
+
+Getting Started with Django on Heroku/Cedar
+http://devcenter.heroku.com/articles/django
+
+
+
+=======================
+  VPS选择
+=======================
+
+技术人创业建站简略指南(Version 0.03)
+http://www.dbanotes.net/startup/Tech_Startup_Ver_002.html
+
+
+
+出家如初,成佛有余  关注电子商务领域，关注无线互联网，关注新媒体
+http://www.yeeach.com/
+
+
+VPS and cloud
+http://www.vpsee.com/about/
+
+
+Linode VPS新手帮助
+http://www.caocaoming.com/?p=44
+
+提供Linode技术支持	
+http://www.blogkid.net/archives/2679.html
+
+Journal of Eivind Uggedal
+http://journal.uggedal.com/vps-performance-comparison/
+
+
+============================
+  后台任务处理
+============================
+
+Choosing a message queue for Python on Ubuntu on a VPS
+ http://www.darkcoding.net/software/choosing-a-message-queue-for-python-on-ubuntu-on-a-vps/
+
+[RabbitMQ+Python入门经典] 兔子和兔子窝
+http://blog.ftofficer.com/2010/03/translation-rabbitmq-python-rabbits-and-warrens/
+
+
+利用Gearman来实现远程监控与管理
+http://timyang.net/linux/gearman-monitor/
+
+Notes on using Gearman with Python
+http://www.saltycrane.com/blog/2010/04/notes-using-gearman-with-python/
+
+
+一步一步实施gearman方案 
+http://blog.dotlife.cn/?p=31
+
+
