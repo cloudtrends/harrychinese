@@ -1,0 +1,44 @@
+0. evaluate text extraction library and web api
+http://tomazkovacic.com/blog/56/list-of-resources-article-text-extraction-from-html-documents/
+http://tomazkovacic.com/blog/122/evaluating-text-extraction-algorithms/
+conclusion :
+Best library, http://code.google.com/p/boilerpipe/ , it is a java lib
+Best web api, http://www.diffbot.com/docs/api/article
+
+1. readability-lxml °ü
+http://github.com/buriy/python-readability
+http://pypi.python.org/pypi/readability-lxml/0.2.3
+
+2. readability
+http://pypi.python.org/pypi/readability/0.9
+https://github.com/srid/readability
+readability.py is not released yet. To install the development version: 
+$ pip install -e git://github.com/srid/readability.git#egg=readability
+
+3. python-readability
+This module requires BeautifulSoup, The author said it's far from perfect (slow, and almost certainly buggy)
+https://github.com/gfxmonk/python-readability
+
+Current module requires BeautifulSoup
+https://github.com/al3xandru/readability.py
+
+decruft
+http://www.minvolai.com/blog/decruft-arc90s-readability-in-python/
+http://code.google.com/p/decruft/
+
+
+basic libs:
+20.chardet-1.0.1.tar.gz
+
+
+21. lxml-2.3.3.tar.gz ÒÀÀµ libxml2 and libxslt
+http://pypi.python.org/pypi/lxml/2.3.3#downloads
+easy_install --allow-hosts=lxml.de,*.python.org lxml
+
+22. libxml2 and libxslt
+Libxml and Libxslt Python Bindings for Windows
+http://www.lfd.uci.edu/~gohlke/pythonlibs/
+http://users.skynet.be/sbi/libxml-python/
+win32 binary download, 
+http://xmlsoft.org/sources/win32/
+ ftp://ftp.zlatkovic.com/libxml/
